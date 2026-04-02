@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>My Flower Vase</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Thasadith:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+
+    <div class="language-switch">
+        <span id="lang-th" onclick="changeLang('th')">TH</span>
+        <span class="separator">|</span>
+        <span id="lang-en" class="active" onclick="changeLang('en')">EN</span>
+    </div>
+
+    <div class="container">
+        <div class="left-panel" id="capture-area">
+            <img src="images/logo.png" id="main-logo" alt="Logo">
+            <img id="slideshow-img" src="images/vase_home1.png" alt="Flower Vase">
+            
+            <div id="layer-bg"></div>
+            <img id="layer-vase" class="layer-img hidden">
+            <img id="layer-center" class="layer-img hidden">
+            <img id="layer-l-side2" class="layer-img hidden">
+            <img id="layer-r-side2" class="layer-img hidden">
+            <img id="layer-l-side" class="layer-img hidden">
+            <img id="layer-r-side" class="layer-img hidden">
+            <img id="layer-deco" class="layer-img hidden">
+            <div id="display-text" class="hidden"></div>
+        </div>
+
+        <div id="screen-start" class="content-area">
+            <h1 class="title" data-key="title">My flower vase</h1>
+            <p class="subtitle" data-key="subtitle">Arrange the flowers in a vase in your own style.</p>
+            <div class="image-placeholder">
+                <img src="images/Vasegroup.png" class="main-img" alt="Vase Group">
+            </div>
+            <button class="btn-gold btn-cursive" onclick="goToMain()" data-key="start-btn">Start</button>
+        </div>
+
+        <div id="screen-main" class="main-decoration-area hidden">
+            <div class="vertical-tab-menu">
+                <div class="tab-item-circle active" onclick="switchTab('vase')"><span>Vase</span></div>
+                <div class="tab-item-circle" onclick="switchTab('center')"><span>Center</span></div>
+                <div class="tab-item-circle" onclick="switchTab('l-side')"><span>L-side</span></div>
+                <div class="tab-item-circle" onclick="switchTab('r-side')"><span>R-side</span></div>
+                <div class="tab-item-circle" onclick="switchTab('l-side2')"><span>L-side2</span></div>
+                <div class="tab-item-circle" onclick="switchTab('r-side2')"><span>R-side2</span></div>
+                <div class="tab-item-circle" onclick="switchTab('deco')"><span>Deco</span></div>
+                <div class="tab-item-circle" onclick="switchTab('bg')"><span>BG</span></div>
+                <div class="tab-item-circle" onclick="switchTab('text')"><span>Text</span></div>
+            </div>
+
+            <div class="vertical-tab-menu">
+                <div class="tab-item-circle active" onclick="switchTab('vase')" id="tab-vase"><span>Vase</span></div>
+                <div class="tab-item-circle" onclick="switchTab('center')" id="tab-center"><span>Center</span></div>
+                <div class="tab-item-circle" onclick="switchTab('l-side')" id="tab-l-side"><span>L-side</span></div>
+                <div class="tab-item-circle" onclick="switchTab('r-side')" id="tab-r-side"><span>R-side</span></div>
+                <div class="tab-item-circle" onclick="switchTab('l-side2')" id="tab-l-side2"><span>L-side2</span></div>
+                <div class="tab-item-circle" onclick="switchTab('r-side2')" id="tab-r-side2"><span>R-side2</span></div>
+                <div class="tab-item-circle" onclick="switchTab('deco')" id="tab-deco"><span>Deco</span></div>
+                <div class="tab-item-circle" onclick="switchTab('bg')" id="tab-bg"><span>BG</span></div>
+                <div class="tab-item-circle" onclick="switchTab('text')" id="tab-text"><span>Text</span></div>
+            </div>
+
+            <div class="right-selection-panel">
+                <h1 class="title-cursive" data-key="choose-style">Choose your style</h1>
+                <div id="grid-options" class="grid-container"></div>
+                <div id="text-input-area" class="text-config hidden">
+                    <input type="text" id="user-text" maxlength="30" placeholder="Type here..." oninput="updateText()">
+                    <div id="text-color-options" class="color-grid-horizontal"></div>
+                </div>
+                <button class="btn-gold btn-cursive done-btn-position" onclick="goToFinish()" data-key="done-btn">Done</button>
+            </div>
+        </div>
+
+        <div id="screen-finish" class="content-area hidden">
+            <h1 class="title-cursive">Beautiful!</h1>
+            <p class="subtitle" id="quote-text"></p>
+            <button class="btn-gold" onclick="saveImage()" style="padding: 10px 40px; margin-top: 20px;">Save Photo</button>
+            <button onclick="location.reload()" class="btn-restart">Create New</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
