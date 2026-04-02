@@ -1,5 +1,5 @@
 const translations = {
-    'th': { 'title': 'แจกันดอกไม้ของฉัน', 'subtitle': 'จัดดอกไม้ในแจกันตามสไตล์ของคุณเอง', 'choose-style': 'เลือกสไตล์ของคุณ', 'start-btn': 'เริ่ม', 'done-btn': 'เสร็จสิ้น' },
+    'th': { 'title': 'แจกันดอกไม้ของฉัน', 'subtitle': 'จัดดอกไม้ในแจกันตามสไตล์ของคุณเอง', 'choose-style': 'เลือกสไตล์ของคุณ', 'start-btn': 'เริ่มจัดดอกไม้', 'done-btn': 'เสร็จสิ้น' },
     'en': { 'title': 'My Flower Vase', 'subtitle': 'Arrange the flowers in a vase in your own style.', 'choose-style': 'Choose your style', 'start-btn': 'Start', 'done-btn': 'Done' }
 };
 
