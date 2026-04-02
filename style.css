@@ -1,0 +1,206 @@
+/* การตั้งค่าพื้นฐาน */
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-weight: 400 !important; }
+
+body {
+    margin: 0; padding: 0;
+    font-family: "Thasadith", sans-serif;
+    background: radial-gradient(circle at 50% 50%, #FFFFFF 0%, #FFFDEB 33%, #FFF2E0 66%, #FFF2E0 100%);
+    display: flex; justify-content: center; align-items: center;
+    height: 100vh; overflow: hidden; user-select: none;
+}
+
+/* Language Switch */
+.language-switch {
+    position: absolute; top: 30px; right: 40px; z-index: 1000;
+    color: #C5A059; cursor: pointer; font-size: 1.1rem;
+}
+.language-switch span { opacity: 0.5; transition: 0.3s; padding: 5px; }
+.language-switch span.active { opacity: 1; text-decoration: underline; }
+
+.container { width: 100%; height: 100%; display: flex; position: relative; }
+
+/* พาเนลซ้าย */
+.left-panel {
+    position: relative;
+    width: 50%; height: 100%; 
+    background-color: rgba(255, 255, 255, 0.05); 
+    border-radius: 0 80px 80px 0; align-self: center;
+    box-shadow: 10px 0 30px rgba(0,0,0,0.06);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    display: flex; justify-content: center; align-items: center;
+    overflow: hidden;
+    
+}
+
+#slideshow-img { max-width: 80%; max-height: 80%; object-fit: contain; transition: opacity 0.8s ease-in-out; }
+.layer-img { position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%); width: 95%; height: 95%; object-fit: contain; pointer-events: none; transition: opacity 0.3s ease; }
+
+/* Z-index Order */
+#layer-bg      { position: absolute; width: 100%; height: 100%; z-index: 1; }
+#layer-vase    { z-index: 10; }
+#layer-center  { z-index: 11; }
+#layer-l-side2, #layer-r-side2 { z-index: 12; }
+#layer-l-side, #layer-r-side   { z-index: 13; }
+#layer-deco    { z-index: 14; }
+#display-text  { position: absolute; bottom: 8%; left: 50%; transform: translateX(-50%); width: 90%; text-align: center; font-size: 1.5rem; color: #C5A059; z-index: 20; word-wrap: break-word; }
+
+/* --- การจัดการหน้า Start (เลื่อนตัวหนังสือขึ้น และลดขนาดรูป) --- */
+.content-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* เลื่อนเนื้อหาทั้งหมดขึ้นบน */
+    padding-top: 5vh; /* ระยะห่างจากขอบบนจอ */
+}
+
+.title {
+    color: #C5A059;
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(3rem, 7vw, 4.5rem);
+    margin-top: 0;
+    margin-bottom: 10px; /* ระยะห่างจาก subtitle */
+}
+
+.subtitle {
+    color: #A68552;
+    font-size: 1.2rem;
+    margin-top: 0;
+    margin-bottom: 3vh; /* ระยะห่างจากรูป Vase Group */
+    text-align: center;
+    padding: 0 20px;
+}
+
+.main-img {
+    width: 100%;
+    max-width: 500px; /* ขนาดแจกันที่เล็กลง (380px เหมาะสมกับ iPad) */
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.05));
+    transition: all 0.3s ease;
+}
+/* --- ปุ่ม Start (เลื่อนลงมานิดนึง) --- */
+.btn-gold {
+    margin-top: 50px; /* <-- เพิ่มระยะจากเดิม (30px) เป็น 50px เพื่อเลื่อนปุ่มลง */
+    border: none;
+    background: white;
+    color: #C5A059;
+    border-radius: 50px;
+    box-shadow: 3px 3px 10px rgba(0,0,0,0.05);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-cursive {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.2rem;
+    padding: 10px 80px;
+}
+
+/* --- Layout หน้าตกแต่ง (Main) --- */
+.main-decoration-area { flex: 1; display: flex; align-items: center; position: relative; }
+/* ปุ่มวงกลมแนวตั้งตรงกลาง */
+.vertical-tab-menu {
+    display: flex; flex-direction: column; gap: 10px;
+    position: absolute; left: -32px; z-index: 100;
+}
+
+.tab-item-circle {
+    width: 62px; height: 62px; border-radius: 50%; background: #FFFFFF;
+    border: 2px solid #f0f0f0; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.4s ease; box-shadow: 2px 2px 8px rgba(0,0,0,0.05);
+}
+
+.tab-item-circle span { font-size: 0.9rem; color: #ab8b4c; }
+.tab-item-circle.active {
+    background: linear-gradient(145deg, #e6e6e6, #ffffff);
+    border-color: #A68552; transform: scale(1.08);
+}
+.tab-item-circle.active span { opacity: 0; }
+/* การตั้งค่ารูปไอคอนพื้นฐานสำหรับปุ่มที่ถูกเลือก */
+.tab-item-circle.active {
+    background-size: 60px; /* ปรับขนาดไอคอนให้เล็กลงกว่าปุ่มเล็กน้อย (ปุ่มกว้าง 62px) */
+    background-repeat: no-repeat;
+    background-position: center;
+    /* ไล่เฉดสีเงินเมทัลลิกเดิมของคุณ */
+    background-image: linear-gradient(145deg, #e6e6e6, #ffffff); 
+}
+
+/* ระบุไฟล์รูปภาพสำหรับแต่ละ ID (เปลี่ยนชื่อไฟล์ตามที่คุณตั้งไว้จริง) */
+#tab-vase.active    { background-image: url('images/icon_vase.png'),    linear-gradient(145deg, #e6e6e6, #ffffff); }
+#tab-center.active  { background-image: url('images/icon_center.png'),  linear-gradient(145deg, #e6e6e6, #ffffff); }
+#tab-l-side.active  { background-image: url('images/icon_lside.png'),   linear-gradient(145deg, #e6e6e6, #ffffff); }
+#tab-r-side.active  { background-image: url('images/icon_rside.png'),   linear-gradient(145deg, #e6e6e6, #ffffff); }
+#tab-l-side2.active { background-image: url('images/icon_lside2.png'),  linear-gradient(145deg, #e6e6e6, #ffffff); }
+#tab-r-side2.active { background-image: url('images/icon_rside2.png'),  linear-gradient(145deg, #e6e6e6, #ffffff); }
+#tab-deco.active    { background-image: url('images/icon_deco.png'),    linear-gradient(145deg, #e6e6e6, #ffffff); }
+#tab-bg.active      { background-image: url('images/icon_bg.png'),      linear-gradient(145deg, #e6e6e6, #ffffff); }
+#tab-text.active    { background-image: url('images/icon_text.png'),    linear-gradient(145deg, #e6e6e6, #ffffff); }
+
+/* พาเนลขวา */
+.right-selection-panel {
+    flex: 1; height: 100%; display: flex; flex-direction: column; 
+    align-items: center; justify-content: center; padding-left: 45px;
+}
+
+.right-selection-panel .title-cursive { margin-bottom: 20px; }
+
+/* Grid */
+.grid-container { 
+    display: grid; 
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 15px; /* เพิ่มระยะห่างระหว่างช่องเล็กน้อย */
+}
+.grid-item {
+    width: 90px;  /* ขยายจาก 70px เป็น 90px */
+    height: 90px; /* ขยายจาก 70px เป็น 90px */
+    border-radius: 15px;
+    background: #ffffff;
+    box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05), 2px 2px 8px rgba(0,0,0,0.02);
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    cursor: pointer; 
+    transition: 0.2s ease;
+}
+.grid-item.selected { 
+    border: 3px solid #C5A059; 
+    background: rgba(197, 160, 89, 0.08); 
+    transform: scale(0.95);
+}
+.grid-preview-img { 
+    width: 90%;  /* ขยายรูปภาพในช่องให้ใหญ่ขึ้น */
+    height: 90%; 
+    object-fit: contain; 
+}
+
+/* Text Config */
+.color-grid-horizontal { display: flex; gap: 8px; margin-top: 12px; }
+.bg-circle { width: 32px; height: 32px; border-radius: 50%; border: 1px solid #ddd; }
+.text-config input[type="text"] { padding: 10px 15px; border-radius: 20px; border: 1px solid #C5A059; width: 350px; outline: none; }
+
+/* Typography */
+.content-area { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.hidden { display: none !important; }
+.title { color: #C5A059; font-family: 'Great Vibes', cursive; font-size: 4rem; margin: 0; }
+.title-cursive { color: #C5A059; font-family: 'Great Vibes', cursive; font-size: 3rem; margin: 0; }
+.subtitle { color: #A68552; font-size: 1.1rem; text-align: center; margin-top: 5px; }
+
+/* ปุ่ม Done */
+.done-btn-position { margin-top: 30px; }
+.btn-gold { border: none; background: white; color: #C5A059; border-radius: 50px; box-shadow: 3px 3px 10px rgba(0,0,0,0.05); cursor: pointer; transition: 0.3s; }
+.btn-cursive { font-family: 'Great Vibes', cursive; font-size: 2rem; padding: 10px 70px; }
+.btn-restart { background: none; border: none; color: #C5A059; cursor: pointer; margin-top: 15px; text-decoration: underline; font-family: inherit; }
+
+#main-logo {
+    position: absolute;
+    top: 50px;
+    right: 50px;
+    width: 80px;
+    height: auto;
+    z-index: 100;
+    pointer-events: none;
+    /* เพิ่มบรรทัดนี้เพื่อซ่อนโลโก้จากการแสดงผลบนหน้าเว็บปกติ */
+    display: none; 
+}
+
+/* ภาษาไทยเฉพาะทาง */
+[lang="th"] .title, [lang="th"] .title-cursive, [lang="th"] .btn-cursive { font-family: "Thasadith", sans-serif !important; font-style: italic; }
